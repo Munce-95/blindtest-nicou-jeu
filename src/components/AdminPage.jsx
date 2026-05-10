@@ -237,19 +237,18 @@ export default function AdminPage() {
               ))}
             </div>
           </div>
-
           {/* CHAT (Moitié droite) */}
-          <div className={`${borderStyle} ${bgStyle} p-6 flex flex-col overflow-hidden border-blue-500/30`} style={forcedRounded}>
-            <h2 className="text-blue-400 font-[1000] text-xl text-center border-b-[4px] border-[#2e1065] pb-2 mb-4 italic uppercase tracking-widest">Live Chat</h2>
-            <div ref={chatContainerRef} className="flex-1 overflow-y-auto space-y-2 font-mono text-xs">
-              {chatHistory.map((msg, i) => (
-                <div key={i} className="border-b border-white/5 pb-1">
-                  <span className="text-[#facc15] font-black uppercase">{msg.username}: </span>
-                  <span className="text-white break-words">{msg.message}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+			<div className={`${borderStyle} ${bgStyle} p-6 flex flex-col overflow-hidden border-blue-500/30`} style={forcedRounded}>
+  				<h2 className="text-blue-400 font-[1000] text-xl text-center border-b-[4px] border-[#2e1065] pb-2 mb-4 italic uppercase tracking-widest">Live Chat</h2>
+  				<div ref={chatContainerRef} className="flex-1 overflow-y-auto space-y-2 font-mono text-xs">
+    				{chatHistory.map((msg, i) => (
+      					<div key={i} className="border-b border-white/5 pb-1">
+        				<span className="text-[#facc15] font-black uppercase">{msg.username}: </span>
+        				<span className="text-zinc-400 break-words">{msg.message}</span>
+      					</div>
+    				))}
+  				</div>
+			</div>
         </div>
 
         {/* ALERTE BUZZ */}
