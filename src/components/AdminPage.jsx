@@ -245,7 +245,7 @@ export default function AdminPage() {
               {chatHistory.map((msg, i) => (
                 <div key={i} className="border-b border-white/5 pb-1">
                   <span className="text-[#facc15] font-black uppercase">{msg.username}: </span>
-                  <span className="text-zinc-400 break-words">{msg.message}</span>
+                  <span style={{ color: '#a1a1aa' }} className="break-words">{msg.message}</span>
                 </div>
               ))}
             </div>
