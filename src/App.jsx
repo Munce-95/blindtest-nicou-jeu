@@ -18,10 +18,13 @@ function App() {
     }
   }
 
+  // On construit l'URL de l'image de manière dynamique pour GitHub Pages
+  const backgroundUrl = `${import.meta.env.BASE_URL}background.jpg`;
+
   return (
     <div 
       className="h-screen w-screen m-0 p-0 overflow-hidden bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: `url('/background.jpg')` }}
+      style={{ backgroundImage: `url('${backgroundUrl}')` }}
     >
       <div className="h-full w-full bg-black/50 backdrop-blur-[2px] relative m-0 p-0">
         
