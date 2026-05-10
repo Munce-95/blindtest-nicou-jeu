@@ -228,6 +228,7 @@ export default function ViewerPage() {
           {chatHistory.map((msg, i) => (
             <div key={i} className="leading-tight animate-in fade-in slide-in-from-left-2">
               <span className="text-[#facc15] font-black uppercase text-[11px]">{msg.username}: </span>
+              {/* Couleur changée ici en text-zinc-400 */}
               <span className="text-zinc-400 break-words">{msg.message}</span>
             </div>
           ))}
