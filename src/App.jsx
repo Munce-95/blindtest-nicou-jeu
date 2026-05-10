@@ -8,7 +8,7 @@ function App() {
   const toggleAdmin = () => {
     if (!isAdmin) {
       const password = prompt("Entrez le mot de passe Admin :");
-      if (password === "cece") {
+      if (password === "Azert.y10200211") {
         setIsAdmin(true);
       } else {
         alert("Accès refusé !");
