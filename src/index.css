@@ -2,8 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Tu peux ajouter tes styles globaux ici après les directives tailwind */
-body {
+/* Supprime les marges et paddings par défaut du navigateur */
+html, body {
   margin: 0;
   padding: 0;
+  height: 100%;
+  width: 100%;
+  /* Force le masquage de tout overflow global */
+  overflow: hidden; 
+}
+
+#root {
+  height: 100%;
+  width: 100%;
 }
