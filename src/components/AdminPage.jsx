@@ -176,8 +176,8 @@ export default function AdminPage() {
   const nextMusicPreview = musics.find(m => m.is_queued) || { filename: "RIEN EN ATTENTE" };
 
   return (
-    /* L'overflow de la page est maintenant géré par le navigateur (min-h-screen et py-8 pour respirer) */
-    <div className="w-full max-w-7xl px-8 grid grid-cols-2 gap-12 min-h-screen py-8 mx-auto text-white">
+    /* NETTOYÉ : Remplacement de h-[85vh] et overflow-hidden par un comportement de page classique fluide */
+    <div className="w-full max-w-7xl px-8 grid grid-cols-2 gap-12 py-8 mx-auto text-white">
       
       {/* GAUCHE : Régie Audio */}
       <div className="flex flex-col gap-6">
@@ -196,7 +196,7 @@ export default function AdminPage() {
           <p className="text-3xl font-[1000] uppercase italic truncate opacity-80" style={{ color: lightGrey }}>{nextMusicPreview.filename}</p>
         </div>
 
-        {/* Bibliothèque MP3 : Elle s'allonge autant qu'il y a de musiques pour tout afficher */}
+        {/* Bibliothèque MP3 */}
         <div className={`${borderStyle} ${bgStyle} p-6 flex flex-col gap-4`} style={forcedRounded}>
           <div className="w-full p-3 font-[1000] text-lg uppercase border-[4px] border-[#2e1065] bg-[#1a1a1a] text-[#facc15] text-center" style={{ borderRadius: '12px' }}>
             BIBLIOTHÈQUE MP3 ({musics.filter(m => !m.is_active).length})
@@ -211,7 +211,7 @@ export default function AdminPage() {
           </div>
         </div>
 
-        {/* Boutons de contrôle toujours placés en dessous de la liste */}
+        {/* Boutons de contrôle */}
         <div className="flex justify-center gap-4 pb-4">
           <button onClick={resetAllMusics} className="ctrl-btn bg-red-600 text-white !border-red-900 shadow-[0_8px_0_0_#450a0a]">🔄</button>
           <button onClick={resetScores} className="ctrl-btn bg-blue-600 text-white !border-blue-900 shadow-[0_8px_0_0_#1e3a8a]">🏆</button>
@@ -226,7 +226,7 @@ export default function AdminPage() {
         {/* RANKING & CHAT */}
         <div className="grid grid-cols-2 gap-6">
           
-          {/* RANKING (Hauteur fixe pour garder un oeil sur le top sans scroller indéfiniment) */}
+          {/* RANKING */}
           <div className={`${borderStyle} ${bgStyle} p-6 h-[400px] flex flex-col overflow-hidden`} style={forcedRounded}>
             <h2 className="text-[#facc15] font-[1000] text-xl text-center border-b-[4px] border-[#2e1065] pb-2 mb-4 italic uppercase tracking-widest">Ranking</h2>
             <div className="flex-1 overflow-y-auto space-y-3 custom-scrollbar">
@@ -241,13 +241,13 @@ export default function AdminPage() {
             </div>
           </div>
 
-          {/* CHAT (Hauteur fixe alignée sur le Ranking) */}
+          {/* CHAT */}
           <div className={`${borderStyle} ${bgStyle} p-6 h-[400px] flex flex-col overflow-hidden border-blue-500/30`} style={forcedRounded}>
             <h2 className="text-blue-400 font-[1000] text-xl text-center border-b-[4px] border-[#2e1065] pb-2 mb-4 italic uppercase tracking-widest">Live Chat</h2>
             <div ref={chatContainerRef} className="flex-1 overflow-y-auto space-y-2 font-mono text-xs custom-scrollbar">
               {chatHistory.map((msg, i) => (
                 <div key={i} className="border-b border-white/5 pb-1">
-                  <span className="text-[#facc15] font-black uppercase">{msg.username}:  scramble </span>
+                  <span className="text-[#facc15] font-black uppercase">{msg.username}: </span>
                   <span style={{ color: '#a1a1aa' }} className="break-words">{msg.message}</span>
                 </div>
               ))}
