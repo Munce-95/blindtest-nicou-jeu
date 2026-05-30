@@ -176,31 +176,33 @@ export default function AdminPage() {
   const nextMusicPreview = musics.find(m => m.is_queued) || { filename: "RIEN EN ATTENTE" };
 
   return (
-    <div className="w-full max-w-7xl px-8 grid grid-cols-2 gap-12 h-[85vh] py-4 mx-auto overflow-hidden">
+    <div className="w-full max-w-7xl px-8 grid grid-cols-2 gap-12 h-[82vh] py-2 mx-auto overflow-hidden">
       
-      {/* GAUCHE : Régie Audio (Froncée en flex-col avec min-h-0 pour bloquer l'étirement) */}
-      <div className="flex flex-col gap-6 min-h-0">
-        <div className={`${borderStyle} ${bgStyle} p-6 border-green-500/40 shrink-0`} style={forcedRounded}>
+      {/* GAUCHE : Régie Audio (Conteneur Flex strict) */}
+      <div className="flex flex-col gap-4 min-h-0 h-full">
+        <div className={`${borderStyle} ${bgStyle} p-4 border-green-500/40 shrink-0`} style={forcedRounded}>
           <h3 className="text-green-400 font-[900] italic uppercase text-xs mb-1 tracking-widest">DIFFUSION EN DIRECT :</h3>
           <div className="flex justify-between items-center">
-            <p className="text-4xl font-[1000] uppercase italic truncate text-white">{currentMusic.filename}</p>
+            <p className="text-3xl font-[1000] uppercase italic truncate text-white">{currentMusic.filename}</p>
             {currentMusic.is_paused && (
               <span className="text-red-500 font-black animate-pulse border-2 border-red-500 px-2 rounded ml-2 text-sm">PAUSE</span>
             )}
           </div>
         </div>
 
-        <div className={`${borderStyle} ${bgStyle} p-6 border-orange-500/40 shrink-0`} style={forcedRounded}>
+        <div className={`${borderStyle} ${bgStyle} p-4 border-orange-500/40 shrink-0`} style={forcedRounded}>
           <h3 className="text-orange-400 font-[900] italic uppercase text-xs mb-1 tracking-widest">PROCHAINE :</h3>
-          <p className="text-3xl font-[1000] uppercase italic truncate opacity-80" style={{ color: lightGrey }}>{nextMusicPreview.filename}</p>
+          <p className="text-2xl font-[1000] uppercase italic truncate opacity-80" style={{ color: lightGrey }}>{nextMusicPreview.filename}</p>
         </div>
 
-        {/* Cadre Bibliothèque MP3 : flex-1 + min-h-0 force la zone à occuper l'espace restant sans déborder */}
-        <div className={`flex-1 min-h-0 ${borderStyle} ${bgStyle} p-6 flex flex-col gap-4`} style={forcedRounded}>
-          <div className="w-full p-3 font-[1000] text-lg uppercase border-[4px] border-[#2e1065] bg-[#1a1a1a] text-[#facc15] text-center shrink-0" style={{ borderRadius: '12px' }}>
+        {/* Bibliothèque MP3 (Prend tout l'espace restant sans pousser les boutons) */}
+        <div className={`flex-1 min-h-0 ${borderStyle} ${bgStyle} p-4 flex flex-col gap-3`} style={forcedRounded}>
+          <div className="w-full p-2 font-[1000] text-base uppercase border-[4px] border-[#2e1065] bg-[#1a1a1a] text-[#facc15] text-center shrink-0" style={{ borderRadius: '12px' }}>
             BIBLIOTHÈQUE MP3 ({musics.filter(m => !m.is_active).length})
           </div>
-          <div className="flex-1 overflow-y-auto border-[4px] border-black/40 p-2 bg-black/40 font-mono text-base" style={{ borderRadius: '12px' }}>
+          
+          {/* LISTE DES MUSIQUES : Avec barre de défilement standard forcée */}
+          <div className="flex-1 overflow-y-scroll border-[4px] border-black/40 p-2 bg-black/40 font-mono text-base style-scrollbar" style={{ borderRadius: '12px' }}>
              {loading ? <div className="p-4 text-center italic" style={{ color: lightGrey }}>Chargement...</div> : 
               musics.map((music) => (
                <div key={music.id} onClick={() => setNextMusic(music.id)} className={`p-3 cursor-pointer border-b border-white/5 uppercase transition-colors hover:bg-[#2e1065] ${music.is_active ? 'hidden' : ''} ${music.is_queued ? 'bg-orange-500 text-black font-bold' : ''}`} style={{ color: music.is_queued ? 'black' : lightGrey }}>
@@ -210,7 +212,8 @@ export default function AdminPage() {
           </div>
         </div>
 
-        <div className="flex justify-center gap-4 shrink-0">
+        {/* BOUTONS DE CONTRÔLE : Verrouillés en bas de l'écran, toujours visibles */}
+        <div className="flex justify-center gap-4 shrink-0 pt-2">
           <button onClick={resetAllMusics} className="ctrl-btn bg-red-600 text-white !border-red-900 shadow-[0_8px_0_0_#450a0a]">🔄</button>
           <button onClick={resetScores} className="ctrl-btn bg-blue-600 text-white !border-blue-900 shadow-[0_8px_0_0_#1e3a8a]">🏆</button>
           <button onClick={() => handleTogglePause(true)} className={`ctrl-btn ${currentMusic.is_paused ? 'bg-yellow-500 shadow-none translate-y-2' : ''}`}>⏸️</button>
@@ -218,30 +221,28 @@ export default function AdminPage() {
         </div>
       </div>
 
-      {/* DROITE : Contrôle du Jeu (Ranking + Chat) */}
-      <div className="flex flex-col gap-6 min-h-0">
-        
-        {/* SECTION DIVISÉE EN DEUX : RANKING | CHAT */}
+      {/* DROITE : Contrôle du Jeu */}
+      <div className="flex flex-col gap-4 min-h-0 h-full">
         <div className="flex-1 grid grid-cols-2 gap-6 min-h-0">
           
           {/* RANKING */}
-          <div className={`${borderStyle} ${bgStyle} p-6 flex flex-col overflow-hidden`} style={forcedRounded}>
-            <h2 className="text-[#facc15] font-[1000] text-xl text-center border-b-[4px] border-[#2e1065] pb-2 mb-4 italic uppercase tracking-widest">Ranking</h2>
+          <div className={`${borderStyle} ${bgStyle} p-4 flex flex-col overflow-hidden`} style={forcedRounded}>
+            <h2 className="text-[#facc15] font-[1000] text-lg text-center border-b-[4px] border-[#2e1065] pb-2 mb-3 italic uppercase tracking-widest">Ranking</h2>
             <div className="flex-1 overflow-y-auto space-y-3">
               {players.map((p, i) => (
                 <div key={i} className="flex justify-between items-center px-2 border-b border-white/5 pb-1">
-                  <span className={`text-lg font-bold uppercase italic ${p.status === 'waiting' ? 'text-red-500 opacity-50' : ''}`} style={{ color: p.status === 'waiting' ? '#ef4444' : lightGrey }}>
+                  <span className={`text-base font-bold uppercase italic ${p.status === 'waiting' ? 'text-red-500 opacity-50' : ''}`} style={{ color: p.status === 'waiting' ? '#ef4444' : lightGrey }}>
                     {p.username}
                   </span>
-                  <span className="text-[#facc15] font-[1000] text-lg">{p.score}</span>
+                  <span className="text-[#facc15] font-[1000] text-base">{p.score}</span>
                 </div>
               ))}
             </div>
           </div>
 
           {/* CHAT */}
-          <div className={`${borderStyle} ${bgStyle} p-6 flex flex-col overflow-hidden border-blue-500/30`} style={forcedRounded}>
-            <h2 className="text-blue-400 font-[1000] text-xl text-center border-b-[4px] border-[#2e1065] pb-2 mb-4 italic uppercase tracking-widest">Live Chat</h2>
+          <div className={`${borderStyle} ${bgStyle} p-4 flex flex-col overflow-hidden border-blue-500/30`} style={forcedRounded}>
+            <h2 className="text-blue-400 font-[1000] text-lg text-center border-b-[4px] border-[#2e1065] pb-2 mb-3 italic uppercase tracking-widest">Live Chat</h2>
             <div ref={chatContainerRef} className="flex-1 overflow-y-auto space-y-2 font-mono text-xs">
               {chatHistory.map((msg, i) => (
                 <div key={i} className="border-b border-white/5 pb-1">
@@ -254,32 +255,49 @@ export default function AdminPage() {
         </div>
 
         {/* ALERTE BUZZ */}
-        <div className={`${borderStyle} ${bgStyle} h-40 flex items-center justify-center relative overflow-hidden text-center shrink-0`} style={forcedRounded}>
+        <div className={`${borderStyle} ${bgStyle} h-36 flex items-center justify-center relative overflow-hidden text-center shrink-0`} style={forcedRounded}>
           {buzzedPlayer ? (
             <div className="z-10">
-              <p className="text-[#facc15] text-sm font-[900] uppercase tracking-[0.3em] mb-1">A BUZZÉ (PAUSE AUTO) :</p>
-              <p className="text-6xl font-[1000] uppercase italic animate-pulse" style={{ color: lightGrey }}>{buzzedPlayer}</p>
+              <p className="text-[#facc15] text-xs font-[900] uppercase tracking-[0.3em] mb-1">A BUZZÉ (PAUSE AUTO) :</p>
+              <p className="text-5xl font-[1000] uppercase italic animate-pulse" style={{ color: lightGrey }}>{buzzedPlayer}</p>
             </div>
           ) : (
-            <p className="font-[900] italic uppercase text-3xl tracking-[0.2em] opacity-30" style={{ color: lightGrey }}>Silence radio...</p>
+            <p className="font-[900] italic uppercase text-2xl tracking-[0.2em] opacity-30" style={{ color: lightGrey }}>Silence radio...</p>
           )}
         </div>
 
         {/* ACTIONS VALIDE / REFUSÉ */}
-        <div className="grid grid-cols-2 gap-8 shrink-0">
-          <button onClick={handleValidate} className="h-24 border-[6px] border-black bg-[#22c55e] shadow-[0_10px_0_0_#15803d] active:translate-y-2 active:shadow-none font-[1000] text-4xl italic uppercase text-black disabled:opacity-30 transition-all" style={{ borderRadius: '20px' }} disabled={!buzzedPlayer}>VALIDE</button>
-          <button onClick={handleRefuse} className="h-24 border-[6px] border-black bg-[#dc2626] shadow-[0_10px_0_0_#991b1b] active:translate-y-2 active:shadow-none font-[1000] text-4xl italic uppercase text-black disabled:opacity-30 transition-all" style={{ borderRadius: '20px' }} disabled={!buzzedPlayer}>REFUSÉ</button>
+        <div className="grid grid-cols-2 gap-6 shrink-0">
+          <button onClick={handleValidate} className="h-20 border-[6px] border-black bg-[#22c55e] shadow-[0_8px_0_0_#15803d] active:translate-y-2 active:shadow-none font-[1000] text-3xl italic uppercase text-black disabled:opacity-30 transition-all" style={{ borderRadius: '20px' }} disabled={!buzzedPlayer}>VALIDE</button>
+          <button onClick={handleRefuse} className="h-20 border-[6px] border-black bg-[#dc2626] shadow-[0_8px_0_0_#991b1b] active:translate-y-2 active:shadow-none font-[1000] text-3xl italic uppercase text-black disabled:opacity-30 transition-all" style={{ borderRadius: '20px' }} disabled={!buzzedPlayer}>REFUSÉ</button>
         </div>
       </div>
 
       <style dangerouslySetInnerHTML={{ __html: `
         .ctrl-btn {
-          width: 4rem; height: 4rem; border-radius: 9999px; border: 6px solid black; background: white;
-          box-shadow: 0 8px 0 0 #000; font-size: 1.8rem; display: flex; align-items: center; justify-content: center;
+          width: 3.8rem; height: 3.8rem; border-radius: 9999px; border: 6px solid black; background: white;
+          box-shadow: 0 8px 0 0 #000; font-size: 1.6rem; display: flex; align-items: center; justify-content: center;
           transition: all 0.1s; cursor: pointer;
         }
         .ctrl-btn:active { transform: translateY(8px); box-shadow: none; }
         .ctrl-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+        
+        /* Personnalisation de la barre de défilement pour qu'elle s'intègre au thème sombre */
+        .style-scrollbar::-webkit-scrollbar {
+          width: 10px;
+        }
+        .style-scrollbar::-webkit-scrollbar-track {
+          background: rgba(0, 0, 0, 0.3);
+          border-radius: 10px;
+        }
+        .style-scrollbar::-webkit-scrollbar-thumb {
+          background: #2e1065;
+          border: 2px solid #1a1a1a;
+          border-radius: 10px;
+        }
+        .style-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #facc15;
+        }
       `}} />
     </div>
   );
