@@ -176,11 +176,11 @@ export default function AdminPage() {
   const nextMusicPreview = musics.find(m => m.is_queued) || { filename: "RIEN EN ATTENTE" };
 
   return (
-    <div className="w-full max-w-7xl px-8 grid grid-cols-2 gap-12 h-[85vh] py-4 mx-auto">
+    <div className="w-full max-w-7xl px-8 grid grid-cols-2 gap-12 h-[85vh] py-4 mx-auto overflow-hidden">
       
-      {/* GAUCHE : Régie Audio */}
-      <div className="flex flex-col gap-6">
-        <div className={`${borderStyle} ${bgStyle} p-6 border-green-500/40`} style={forcedRounded}>
+      {/* GAUCHE : Régie Audio (Froncée en flex-col avec min-h-0 pour bloquer l'étirement) */}
+      <div className="flex flex-col gap-6 min-h-0">
+        <div className={`${borderStyle} ${bgStyle} p-6 border-green-500/40 shrink-0`} style={forcedRounded}>
           <h3 className="text-green-400 font-[900] italic uppercase text-xs mb-1 tracking-widest">DIFFUSION EN DIRECT :</h3>
           <div className="flex justify-between items-center">
             <p className="text-4xl font-[1000] uppercase italic truncate text-white">{currentMusic.filename}</p>
@@ -190,13 +190,14 @@ export default function AdminPage() {
           </div>
         </div>
 
-        <div className={`${borderStyle} ${bgStyle} p-6 border-orange-500/40`} style={forcedRounded}>
+        <div className={`${borderStyle} ${bgStyle} p-6 border-orange-500/40 shrink-0`} style={forcedRounded}>
           <h3 className="text-orange-400 font-[900] italic uppercase text-xs mb-1 tracking-widest">PROCHAINE :</h3>
           <p className="text-3xl font-[1000] uppercase italic truncate opacity-80" style={{ color: lightGrey }}>{nextMusicPreview.filename}</p>
         </div>
 
-        <div className={`flex-1 ${borderStyle} ${bgStyle} p-6 flex flex-col gap-4`} style={forcedRounded}>
-          <div className="w-full p-3 font-[1000] text-lg uppercase border-[4px] border-[#2e1065] bg-[#1a1a1a] text-[#facc15] text-center" style={{ borderRadius: '12px' }}>
+        {/* Cadre Bibliothèque MP3 : flex-1 + min-h-0 force la zone à occuper l'espace restant sans déborder */}
+        <div className={`flex-1 min-h-0 ${borderStyle} ${bgStyle} p-6 flex flex-col gap-4`} style={forcedRounded}>
+          <div className="w-full p-3 font-[1000] text-lg uppercase border-[4px] border-[#2e1065] bg-[#1a1a1a] text-[#facc15] text-center shrink-0" style={{ borderRadius: '12px' }}>
             BIBLIOTHÈQUE MP3 ({musics.filter(m => !m.is_active).length})
           </div>
           <div className="flex-1 overflow-y-auto border-[4px] border-black/40 p-2 bg-black/40 font-mono text-base" style={{ borderRadius: '12px' }}>
@@ -205,11 +206,11 @@ export default function AdminPage() {
                <div key={music.id} onClick={() => setNextMusic(music.id)} className={`p-3 cursor-pointer border-b border-white/5 uppercase transition-colors hover:bg-[#2e1065] ${music.is_active ? 'hidden' : ''} ${music.is_queued ? 'bg-orange-500 text-black font-bold' : ''}`} style={{ color: music.is_queued ? 'black' : lightGrey }}>
                  {music.filename} {music.is_queued && " ➔ PRÊT"}
                </div>
-             ))}
+              ))}
           </div>
         </div>
 
-        <div className="flex justify-center gap-4">
+        <div className="flex justify-center gap-4 shrink-0">
           <button onClick={resetAllMusics} className="ctrl-btn bg-red-600 text-white !border-red-900 shadow-[0_8px_0_0_#450a0a]">🔄</button>
           <button onClick={resetScores} className="ctrl-btn bg-blue-600 text-white !border-blue-900 shadow-[0_8px_0_0_#1e3a8a]">🏆</button>
           <button onClick={() => handleTogglePause(true)} className={`ctrl-btn ${currentMusic.is_paused ? 'bg-yellow-500 shadow-none translate-y-2' : ''}`}>⏸️</button>
@@ -218,12 +219,12 @@ export default function AdminPage() {
       </div>
 
       {/* DROITE : Contrôle du Jeu (Ranking + Chat) */}
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-6 min-h-0">
         
         {/* SECTION DIVISÉE EN DEUX : RANKING | CHAT */}
         <div className="flex-1 grid grid-cols-2 gap-6 min-h-0">
           
-          {/* RANKING (Moitié gauche) */}
+          {/* RANKING */}
           <div className={`${borderStyle} ${bgStyle} p-6 flex flex-col overflow-hidden`} style={forcedRounded}>
             <h2 className="text-[#facc15] font-[1000] text-xl text-center border-b-[4px] border-[#2e1065] pb-2 mb-4 italic uppercase tracking-widest">Ranking</h2>
             <div className="flex-1 overflow-y-auto space-y-3">
@@ -238,7 +239,7 @@ export default function AdminPage() {
             </div>
           </div>
 
-          {/* CHAT (Moitié droite) */}
+          {/* CHAT */}
           <div className={`${borderStyle} ${bgStyle} p-6 flex flex-col overflow-hidden border-blue-500/30`} style={forcedRounded}>
             <h2 className="text-blue-400 font-[1000] text-xl text-center border-b-[4px] border-[#2e1065] pb-2 mb-4 italic uppercase tracking-widest">Live Chat</h2>
             <div ref={chatContainerRef} className="flex-1 overflow-y-auto space-y-2 font-mono text-xs">
@@ -253,7 +254,7 @@ export default function AdminPage() {
         </div>
 
         {/* ALERTE BUZZ */}
-        <div className={`${borderStyle} ${bgStyle} h-40 flex items-center justify-center relative overflow-hidden text-center`} style={forcedRounded}>
+        <div className={`${borderStyle} ${bgStyle} h-40 flex items-center justify-center relative overflow-hidden text-center shrink-0`} style={forcedRounded}>
           {buzzedPlayer ? (
             <div className="z-10">
               <p className="text-[#facc15] text-sm font-[900] uppercase tracking-[0.3em] mb-1">A BUZZÉ (PAUSE AUTO) :</p>
@@ -265,7 +266,7 @@ export default function AdminPage() {
         </div>
 
         {/* ACTIONS VALIDE / REFUSÉ */}
-        <div className="grid grid-cols-2 gap-8">
+        <div className="grid grid-cols-2 gap-8 shrink-0">
           <button onClick={handleValidate} className="h-24 border-[6px] border-black bg-[#22c55e] shadow-[0_10px_0_0_#15803d] active:translate-y-2 active:shadow-none font-[1000] text-4xl italic uppercase text-black disabled:opacity-30 transition-all" style={{ borderRadius: '20px' }} disabled={!buzzedPlayer}>VALIDE</button>
           <button onClick={handleRefuse} className="h-24 border-[6px] border-black bg-[#dc2626] shadow-[0_10px_0_0_#991b1b] active:translate-y-2 active:shadow-none font-[1000] text-4xl italic uppercase text-black disabled:opacity-30 transition-all" style={{ borderRadius: '20px' }} disabled={!buzzedPlayer}>REFUSÉ</button>
         </div>
